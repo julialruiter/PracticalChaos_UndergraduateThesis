@@ -1,0 +1,51 @@
+\section{What is Encryption?}
+    
+    \frame{\sectionpage}
+    
+    \begin{frame}{Creating a Cryptosystem}
+        \centering
+        What you need:
+        \begin{itemize}
+        	\item A message  $m$
+        	\item A method to encode  $f$
+        	\item A method to decode  $h$
+        	\item A key  $k$
+        \end{itemize}
+    \end{frame}    
+      
+    \begin{frame}{Creating a Cryptosystem}
+        \centering
+        \begin{equation*}
+            c = f ( m , k )
+        \end{equation*}%
+        \begin{equation*}
+            m = h ( c )
+        \end{equation*}%
+        \begin{equation*}
+            c \neq m   
+        \end{equation*}
+    \end{frame}
+    
+    \begin{frame}{Creating a Cryptosystem}
+        \begin{minipage}[b]{0.45\linewidth}
+            What you need:
+            \begin{itemize}
+            	\item A message  $m$
+            	\item A method to encode  $f$
+            	\item A method to decode  $h$
+            	\item A key  $k$
+            \end{itemize}
+        \end{minipage}
+        \hspace{0.5cm}
+        \begin{minipage}[b]{0.45\linewidth}
+            \centering
+            \begin{equation*}
+                \centering
+                \begin{cases} 
+                \dot{x} = \sigma(y-x) \\ 
+                \dot{y} = rx - y - xz \\ 
+                \dot{z} = xy - bz
+                \end{cases}
+            \end{equation*} 
+        \end{minipage}
+    \end{frame}

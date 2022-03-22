@@ -1,0 +1,114 @@
+
+
+\documentclass{scrippsthesis}
+%\documentclass[a4paper,11pt,twoside]{scrippsthesis}
+%\usepackage[pass]{geometry}
+%%% HEADER INFORMATION %%%
+
+\title{Practical Chaos:  Using Dynamical Systems to Encrypt Audio and Visual Data}
+\author{Julia Ruiter}
+%\reader{Chris Towse}
+%\reader{Adam Landsberg}
+
+%%% Including new commands and packages.
+
+% Allows for auto formatting of theorems,
+% definitions etc.
+\usepackage{amsthm}
+\usepackage{graphics,graphicx}
+\usepackage{tikz}
+\usepackage{verbatimbox}
+\usepackage{textgreek}
+\usepackage[toc,page]{appendix}
+\usepackage{float}
+\usepackage{amsmath}
+
+
+\newtheorem{thm}{Theorem}[chapter]
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{cor}[thm]{Corollary}
+
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{ex}[thm]{Example}
+
+\theoremstyle{remark}
+\newtheorem*{rmk}{Remark}
+\newtheorem*{notn}{Notation}
+\newtheorem*{pf}{Proof}
+
+% Add any new commands here.
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\F}{\mathbb{F}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\NN}{\mathbb{N}}
+
+%file path for images
+
+
+%%%  END HEADER %%%
+
+\begin{document}
+%\begin{comment}
+
+\frontmatter
+
+\maketitle % Title page
+%
+%
+%%%% ABSTRACT.
+%
+\begin{abstract} 
+Although dynamical systems have a multitude of classical uses in physics and applied mathematics, new research in theoretical computer science shows that dynamical systems can also be used as a highly secure method of encrypting data.  Properties of Lorenz and similar systems of equations yield chaotic outputs that are good at masking the underlying data both physically and mathematically.  This paper aims to show how Lorenz systems may be used to encrypt text and image data, as well as provide a framework for how physical mechanisms may be built using these properties to transmit encrypted wave signals.
+\end{abstract}
+
+%%% CONTENTS, FIGURES, TABLES
+\tableofcontents
+\listoffigures
+%\listoftables
+
+%%% ACKNOWLEDGEMENTS.
+
+%\begin{acknowledgments}
+%...(write here later)
+%\end{acknowledgments}
+
+%%% End of the front matter.
+
+%% MAIN MATTER - INCLUDE THE CHAPTERS.
+\mainmatter
+
+% CHAPTERS %
+
+\input{Lorenz}
+
+\input{Cryptography}
+
+\input{Image}
+
+\input{Audio}
+
+%\input{PhysApps}
+
+\input{FutureWorks}
+
+%\end{comment}
+
+
+%%% End of the main matter.
+\backmatter
+
+%%%% BIBLIOGRAPHY (Be sure cto compile with BibTeX to make this work!)
+%
+\nocite{*} % Show everything in bib file, not just things that are explicitly cited.
+\bibliography{bibliography}
+\bibliographystyle{alpha}
+%\printbibliography
+
+
+\end{document}
+
+% double check/cross with original doc--might be undoing what is going on in 
+% have to bibtex bibliography first, then can tex rest of file

@@ -1,0 +1,31 @@
+\section{Chaotic Encryption:  Digital Images}
+    
+    \frame{\sectionpage}
+    
+    \begin{frame}{Process}
+        \centering
+        What to encrypt:
+        \begin{itemize}
+        	\item Pixel color values (RBG/BW)
+        	\item Pixel locations
+        \end{itemize}
+    \end{frame}    
+
+    % \begin{frame}{Why?}
+    %     \begin{figure}
+    %         \centering
+    %         \includegraphics[height=7cm]{celty.png}
+    %     \end{figure}
+    % \end{frame}    
+
+    \begin{frame}{How:}
+        \centering
+        Shuffling Pixel Values, mod 256:
+        \begin{equation*}
+            f ( p ) := p_{i+1} = \lambda_{1} * p_{i} ( 1 - p_{i} )
+        \end{equation*}
+        Shuffling pixel locations, mod (image size)
+        \begin{equation*}
+            g ( p ) := p_{i+1} = \lambda_{2} * p_{i} ( 1 - p_{i} )
+        \end{equation*}
+    \end{frame}

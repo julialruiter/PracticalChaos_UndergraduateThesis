@@ -1,0 +1,40 @@
+\chapter{Cryptography}
+
+At the core of cryptography is one premise:  Alice wants to send a message to Bob, but is afraid of Eve intercepting and reading it.  Alice has no control over whether or not Eve will or won't get ahold of her correspondences, but she is able to control how easy it is for Eve to interpret and thus understand the content of the message.  However, Bob still needs to be able to decypher the contents of the message that is being sent to him, so Alice must come up with some sort of reversible system that will mask her message; a method that successfully allows for both of these criteria is called a \textit{cryptosystem}.
+
+Cryptosystems can range from the familiar Caesar Cyphers from passing notes in elementary school to complex numerical systems only solvable by computers.  A good cryptosystem is one that is very difficult, or even impossible, to decrypt unless you have a particular set of information known as a \textit{key}.  The difficulty of encoding, or encrypting, the message is irrelevant to the strength of the cryptosystem, but certainly the easier it is to encrypt, the more useful of a system it is.  In order to explain how exactly  Liu, Chen, or Lorenz equations make a foundation for a reliable cryptosystem, I will compare it to a simpler system, then explain the particular advantages of \textit{Chaotic encryption} over other methods.
+
+\subsection{Choosing a Key}
+
+"Buj'i we rqsa je jxu Squiqh Sofxuh unqcfbu", or rather, "Let's go back to the Caesar Cypher example". 
+
+A cryptosystem's key is the transform from the original message to the encrypted one.  In this case, it's clear that there's a one for one substitution for each character and, in particular, that shift is 16 letters to the right; therefore the key is 16. All Bob has to do to read Alice's message is use the key in some sort of function in order to invert the decryption; so here, shift 16 characters to the left.  Remember, a good cryptosystem is largely dependent on choosing good keys.  It is obvious that there are only 26 possible keys to choose from, and setting the key equal to 26 is a very poor decision.  Even 13 is a bad idea since it is a common key used for Caesar Cyphers and Eve would likely figure out that key quickly.  If Eve figures out the key, or manages to find some other method of breaking the system (say, by using a code breaker she finds online), then the system is compromised and no longer a secure means of communication.
+
+We can extend this idea to other cryptosystems--every encryption method will have its trivial keys, redundant keys (for the above example, a key of 42 would yield the same result, as would -10), and keys that simply just don't work (how on Earth would you shift 1.75 letters to the right?!).  However, it is not always easy to tell if a chosen key will work.  One might think that any values ($a, b, and r$) can work in the differential equations, but because of the nature of \textit{Strange Attractors} inherent to these types of graphs, that's not always the case.  As we saw in the previous chapter, some values yield a predictable graph,  meaning that Eve could use the encrypted message to fairly easily create a model and break the code.  
+
+Other values may yield other strange results, like cyclic outputs.  If you were to draw a steady state diagram of these degenerate systems, you would see cycles in the graphs, meaning that two different input values can encrypt to the same value, and Bob wouldn't know which output is correct, if he even realizes the redundancy at all.  So while it is certain that there are infinite values of ($a, b, and r$) that will produce chaotic output and therefore make good keys, it is nice to know that there is a smaller subset of that infinity that are easy to find as well as \textit{guaranteeing} non-degeneracy.  These keys ensure a secure system because, unless Alice and Bob agree on a trivial key (say, some nice round number close to the base Lorenz parameters), it would be near impossible for Eve to brute force break the system by trying every possible key because there are infinitely many of them.
+
+\subsection{Creating an Encryption System}
+
+Every cryptosystem has three components: ($c$)--the encrypted message, ($k$)--the key, and ($h$)--the function the transform ($c$) back to the original message ($m$).  In the earlier example, each element of ($c$) had a 1:1 correspondence to an element of ($m$), and this is true for nearly all cryptosystems, for ease of encoding and decoding, particularly on the recipient's end.  Ideally, rather than have to solve each element individually (as one might do in a symbol substitution cypher), you will have a function ($h$) that will either directly give you the decoded message, or at least make it faster to decode each ensuing component of the message after the first.  Generally for any cryptosystem, these components will be defined by the functions:
+%
+\begin{equation}
+    c = e ( m , k ) \\
+\end{equation}
+\begin{equation}
+    m = h ( c ) \\
+\end{equation}
+\begin{equation}
+    c \neq m   
+\end{equation}
+%
+where ($h$) can be one or many functions in a system that decrypts ($c$) and where ($e$) is the function that encodes ($m$), but is not necessarily the inverse function of ($h$), particularly when ($h$) is a system of functions.  It is also important to note that a cryptosystem may have multiple keys, or each party may have their own personal key that the other party may not know.  ($h$) is determined by the type of system; all Lorentz systems have the same structure, where ($h(c)$) is simply the set of differential equations and k the constant scalars ($a, b, r, c, k$).  Generally, Alice will compute ($c$) and send it to Bob, who by prior arrangement knows ($k$) and therefore can decode the message using ($h$) and any other helper equations necessary.
+
+How, exactly, ($c$) is transmitted is more flexible than with other cryptosystems.  Typically, encoded messages would just be sent in written form or typed, and is then just a numbers game on the other side.  However, physical chaotic systems also have the unique property in that they can synchronise with other systems, and therefore automatically decode if set to the same initial parameters, k.  This flexibility is what makes for a promising future in audiovisual encryption.
+
+
+
+
+
+
+

@@ -1,0 +1,94 @@
+\chapter{Visual Static:  Using Dynamical Systems to Encrypt Photographs }
+
+In order to truly scramble the contents of an image, you must not only transform the color values of each pixel, but also randomize the location of each pixel in such a way that both sets of data minimize loss in the encoding/decoding process.  Most encryption systems can only do the former, which is not sufficient for privacy since a lot of nearby pixels will be nearly the same color.  Having almost the same RBG/BW values, these nearby pixels will transform to relatively nearby values in the encrypted state.  This is not secure for two reasons:  1) a mapping of these values back onto a grid will still show the general outlines/contrast color locations as the original photo, and 2) knowing how close the transforms are to each other, one could use this to approximate the derivative values--which \textit{are} the Lorenz transform equations, thus allowing anyone intercepting the image to possibly reconstruct it, and much easier with non-chaotic transform equations.
+
+It is the element of chaos in Lorenz systems that allows for a truly unpredictable shuffling pattern, thus making image encryption more secure than ever before.  One method of combining these two ideas into one cryptosystem has been proposed by a group of computer engineering in Istanbul.  In this section, I will outline the method, as well as discuss ways in which this cryptosystem may be simplified.
+
+\subsection{Proposed Image Encryption System}
+
+Two non-Lorenz chaotic systems run in tandem: 
+\begin{equation}
+    f ( p ) := p_{i+1} = \lambda_{1} * p_{i} ( 1 - p_{i} )
+\end{equation}
+\begin{equation}
+    g ( p ) := p_{i+1} = \lambda_{2} * p_{i} ( 1 - p_{i} )
+\end{equation}
+one to encrypt the pixel color values denoted by ($f(p)$), and the other the pixel locations which we'll denote with ($g(p)$).  In order to minimize number of keys needed, the researchers use the two variable bifurcation equations to make the transformation, rather than have the variables depend on each other as in Lorenz-like systems.  This makes sense since they took care to make sure the two encryption systems use different \textlambda values. Since there are a finite number of pixel color values (256 each for red, blue, green, and brightness), and there are a finite number of pixels in the image, all ($x_{i+1}$) and ($y_{i+1}$) values are discrete and greater than or equal to zero.  This means that there are a discrete number of outputs to both ($g(p)$) and ($f(p)$).  The outputs for ($f(p)$) and ($g(p)$) need to be set to discrete values in order to make a new image.  This is done by taking a step down function, then taking ($f(p)$) modulo 256 and ($g(p)$) modulo the number of pixels in the image.  Finally, the outputs of these functions for each pixel are paired together, then reordered in ascending order based on ($g(p)$).  
+
+\subsection{Possible Improvements}
+
+It may seem that due to the chaotic nature of the transform equation, it should not be necessary to have two separate lambda values, especially since the outputs will be on different scales anyway sue to the different modulo values.  However, this is not enough, as nearby pixels have nearby color values and therefore nearby transformations.  If the same lambda is applied to both parameters, the new transform locations will also be nearby, and nearly the same color.  However, this can be solved by using a different type of chaotic equation; the Liu system we looked at back in Chapter 1 shows that nearby small values oscillate, and oscillate in unpredictable patterns.  If a large enough lambda is chosen, the nearby pixels will be less correlated to each other due to higher variation in derivative, and thus it is far more likely for other pixels from other parts of the image to end up nearby as well.
+
+\subsection{Plotting Bifurcation Diagrams in Python}
+
+This is the base Python code I used to plot the bifurcation diagrams of the various chaotic systems trying to understand where Yavuz, et. al got their "seed values", or ($r$) key values for the transformation.  The publication was vague on the exact numbers used, but after some trial and error, it became clear that any value of lambda would work, as long as the ($x_i$) and ($y_i$) values are discrete, which they are since they respond to pixel location and color values, with the lambda determining how chaotic the resulting system is (the more bifurcations present, the more chaotic the system).  This code is based on an open source GitHub repository owned by "Alain1405" which uses a numerical approach to solve differential equations.  Simply replace the return line in "def logisticeq(r,x)" with your 2 parameter differential, and adjust the plot limits if needed.
+
+%\begin{equation}
+\begin{lstlisting}
+\begin{verbatim}
+
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+# Logistic function implementation
+def logisticeq(r,x):
+    return r*x*(1-x)
+
+# Iterate the function for a given r
+def logistic_equation_orbit(seed, r, n_iter, n_skip=0):
+    X_t=[]
+    T=[]
+    t=0
+    x = seed;
+    # Iterate the logistic equation, printing only if  \
+        n_skip steps have been skipped
+    for i in range(n_iter + n_skip):
+        if i >= n_skip:
+            X_t.append(x)
+            T.append(t)
+            t+=1
+        x = logisticeq(r,x);
+    # Configure and decorate the plot
+    plt.plot(T, X_t)
+    plt.ylim(0, 1)
+    plt.xlim(0, T[-1])
+    plt.xlabel('Time t')
+    plt.ylabel('X_t')
+    plt.show()
+
+# logistic_equation_orbit(0.1, 3.05, 100)
+
+# Create the bifurcation diagram
+def bifurcation_diagram(seed, n_skip, n_iter, step=0.0001,  \ 
+        r_min=0):
+    # Array of r values, the x axis of the bifurcation plot
+    R = []
+    # Array of x_t values, the y axis of the bifurcation plot
+    X = []
+    
+    # Create the r values to loop. For each r value we will   \ 
+        plot n_iter points
+    r_range = np.linspace(r_min, 4, int(1/step))
+
+    for r in r_range:
+        x = seed;
+        # For each r, iterate the logistic function and  \  
+            collect datapoint if n_skip iterations have occurred
+        for i in range(n_iter+n_skip+1):
+            if i >= n_skip:
+                R.append(r)
+                X.append(x)
+                
+            x = logisticeq(r,x);
+    # Plot the data    
+    plt.plot(R, X, ls='', marker=',')
+    plt.ylim(0, 1)
+    plt.xlim(r_min, 4)
+    plt.xlabel('r')
+    plt.ylabel('X')
+    plt.show()
+
+bifurcation_diagram(0.2, 100, 5)
+\end{verbatim}
+\end{lstlisting}

@@ -1,0 +1,55 @@
+\chapter{Synchronised Chaos:  Using Dynamical Systems to Encrypt Sound}
+
+One advantage chaotic encryption has over other methods is that it can encrypt all kinds of data, from text, to images, to even sound. For sound, it is possible to have coupled chaotic systems--two or more remote oscillators that exhibit the same relationships in patterns of motion, allowing for secure communication over large distances.  This coupling property was originally theorized in 1989 by Pecora and Carroll based off of nonlinear spin wave properties in magnetic materials.  Systems can be synchronised by transmitting waves from the "master" system to the receiver system(s), although inexplicable, the more systems were coupled, the greater the lag time in oscillations between units.  It is important to note that the units to not have the exact same motion, but rather that their range of motion is proportionally similar in terms of components. 
+
+However, the audio encryption done using the Pecora-Carroll method differs from the previous chaotic encryption methods mentioned.  While earlier systems used Lorenz equations as a transformation function to receiver, this method uses the chaos as a shielding "drone" under the transmitted message.  Rather, the message itself isn't encoded, but it is like a cryptosystem in that it requires the other party to know the parameters.  Here, the Lorenz system itself is the key--it tells Bob what to "noise" to filter out of the transmitted message c.
+
+
+\subsection{Master-Receiver Setup}
+
+There are two different setups for a synchronised chaotic system that allow for this sort of encryption that just vary in how the receiver unit interacts with the master.  While the transmitting unit (Alice's) has components in three directions, the receiving unit  is only going to have two directions giving output to Bob; the third direction is known as the \textit{driver}.  The driver parameter is what causes the resonance between the units, allowing for this communication between them.  Without loss of generality, let us assume the the driving parameter is ($x$).  This means that the receiving unit will not have an ($x_{r}$) equation, and that the ($y_{r}$) and ($z_{r}$) equations will only depend on the ($x$) signal being transmitted and the responses of each other.
+
+
+The master can be set up to use the Lorenz system of encryption we are already familiar with:
+\begin{equation}
+\begin{cases} 
+\dot{x_{m}} = \sigma(y-x) \\ 
+\dot{y_{m}} = rx - y - xz \\ 
+\dot{z_{m}} = xy - bz
+\end{cases}
+\end{equation}
+which means that the receiving unit has the remaining equations, also in the form of the Lorenz system:
+\begin{equation}
+\begin{cases} 
+\dot{y_{r}} = rx - y_{r} - xz_{r} \\ 
+\dot{z_{r}} = xy_{r} - bz_{r}
+\end{cases}
+\end{equation}
+
+However, there is a different chaotic system known as the R\"{o}ssler system that works, too. The master unit emits:
+\begin{equation}
+\begin{cases} 
+\dot{x_{m}} = -(y-x) \\ 
+\dot{y_{m}} = x - ay  \\ 
+\dot{z_{m}} = b+z(x-c)
+\end{cases}
+\end{equation}
+which leaves the receiving unit with the parameters: 
+\begin{equation}
+\begin{cases} 
+\dot{y_{r}} = x - ay_{r} \\ 
+\dot{z_{r}} = b+z_{r}(x-c)
+\end{cases}
+\end{equation}
+
+Interestingly, since the coupled R\"{o}ssler system has less "keys", there is a more direct relationship between the {$y_{m}$} and {$y_{r}$} as well as the {$z_{m}$} and {$z_{r}$} units, meaning that the received and "decoded" message is more like the original than if passed through a coupled Lorenz system.  As desired before in the cases of image encryption, minimizing loss in the transmitted message is equally as important as the security of the system itself.  And although the coupled unit system has less keys, it is perhaps more secure than other cryptosystems because you need to have the coupled unit itself to decode messages, and if messages are transmitted real time, there is a minuscule chance of interception, rather than on an encrypted image shared over a computer. 
+
+Most fascinating, though, is the fact that the receiving unit does not need to be running the same type of encryption in order to communicate with the master unit.  Hernandez et. al discovered that Lorenz systems could communicate almost equally as well with systems running Lu or Chen dynamical systems because all three sets of equations have the same ($\dot{x}$) dependence as each other.  When you make this parameter the driving parameter between the two units, it does not matter what the rest of the system is--the other parameters of the receiving system, as in the two cases above, are just responses to the driver.  However, as the other parameter relationships are different, a lot of noise remains in the decrypted message, so it is far from perfect.
+
+\subsection{Is it Secure Enough?}
+
+The mis-paired systems mentioned above to indicate that there could be a security risk inherent in coupled chaotic systems.  If it is possible for two dissimilar systems to yield similar success in decryption, is it then not possible for there to exist some other dynamical system that takes components of other systems and use it as a brute force break on a transmission?  For audio, perhaps, but image and text encryptions have far less data points, so the noise obscures a lot more, meaning that a brute force attempt like this is unlikely to get anywhere.
+
+
+
+
